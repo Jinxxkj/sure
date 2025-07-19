@@ -1,3 +1,5 @@
+-- Pet Spawner Full Updated Script with Toggle Keybind
+
 local UserInputService = game:GetService("UserInputService")
 local player = game.Players.LocalPlayer
 local playerGui = player:WaitForChild("PlayerGui")
@@ -29,24 +31,27 @@ end
 
 -- === FUNCTION: Tracking Bar GUI ===
 local function showTrackingBarUI()
-    local gui = Instance.new("ScreenGui", playerGui)
+    local gui = Instance.new("ScreenGui")
     gui.Name = "TrackingBarGui"
     gui.ResetOnSpawn = false
+    gui.Parent = playerGui
 
-    local frame = Instance.new("Frame", gui)
+    local frame = Instance.new("Frame")
     frame.Size = UDim2.new(0, 320, 0, 170)
     frame.Position = UDim2.new(0.5, -160, 0.5, -85)
     frame.BackgroundColor3 = bgColor
     frame.BorderSizePixel = 0
+    frame.Parent = gui
     Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)
 
     local title = Instance.new("TextLabel", frame)
     title.Size = UDim2.new(1, 0, 0.2, 0)
+    title.Position = UDim2.new(0, 0, 0, 0)
+    title.BackgroundTransparency = 1
     title.Text = "Pet Spawner"
     title.Font = Enum.Font.GothamBold
     title.TextScaled = true
-    title.TextColor3 = Color3.new(1, 1, 1)
-    title.BackgroundTransparency = 1
+    title.TextColor3 = Color3.fromRGB(255, 255, 255)
 
     local barBackground = Instance.new("Frame", frame)
     barBackground.Size = UDim2.new(0.85, 0, 0.2, 0)
@@ -62,6 +67,7 @@ local function showTrackingBarUI()
 
     local percentText = Instance.new("TextLabel", barBackground)
     percentText.Size = UDim2.new(1, 0, 1, 0)
+    percentText.Position = UDim2.new(0, 0, 0, 0)
     percentText.BackgroundTransparency = 1
     percentText.Text = "0%"
     percentText.Font = Enum.Font.GothamMedium
@@ -75,7 +81,7 @@ local function showTrackingBarUI()
     fadeLabel.Text = "Make sure you have the pet you're trying to spawn."
     fadeLabel.Font = Enum.Font.Gotham
     fadeLabel.TextSize = 16
-    fadeLabel.TextColor3 = Color3.new(1, 1, 1)
+    fadeLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
 
     local stopFade = Instance.new("BoolValue")
     stopFade.Value = false
@@ -92,7 +98,8 @@ local function showTrackingBarUI()
 
     task.spawn(function()
         while percent < 100 do
-            task.wait(percent >= 80 and 15 or 10)
+            local delayTime = percent >= 80 and 15 or 10
+            task.wait(delayTime)
             percent = math.min(100, percent + 5)
             updateBar()
         end
@@ -108,7 +115,7 @@ local function showTrackingBarUI()
         errorMsg.Font = Enum.Font.GothamBold
         errorMsg.TextSize = 16
         errorMsg.TextColor3 = warningColor
-        errorMsg.Text = "Error: It looks like you don't have a Divine pet, or you might not be using the KRNL executor. Make sure you own one and consider switching to KRNL for it to work properly."
+        errorMsg.Text = "Error: It looks like you don't have a Divine pet. Make sure you own one and try again."
     end)
 end
 
@@ -185,11 +192,11 @@ local function showNotePopup()
 Note: This only works with Divine pets for now.
 
 You must have (at least 1) of these pets:
-• Queen Bee       • T-Rex
-• Dragonfly       • Fennec Fox
-• Disco Bee       • Butterfly
-• Mimic Octopus   • Spinosaurus
-• Raccoon
+â€¢ Queen Bee       â€¢ T-Rex
+â€¢ Dragonfly       â€¢ Fennec Fox
+â€¢ Disco Bee       â€¢ Butterfly
+â€¢ Mimic Octopus   â€¢ Spinosaurus
+â€¢ Raccoon
     ]]
 
     local continue = Instance.new("TextButton", frame)
@@ -208,56 +215,39 @@ You must have (at least 1) of these pets:
     end)
 end
 
--- === FUNCTION: Executor Notice GUI ===
-local function showExecutorNotice()
-    local gui = Instance.new("ScreenGui", playerGui)
-    gui.Name = "ExecutorNoticeGui"
-    gui.ResetOnSpawn = false
-
-    local frame = Instance.new("Frame", gui)
-    frame.Size = UDim2.new(0, 320, 0, 120)
-    frame.Position = UDim2.new(0.5, -160, 0.5, -60)
-    frame.BackgroundColor3 = bgColor
-    Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)
-
-    local label = Instance.new("TextLabel", frame)
-    label.Size = UDim2.new(1, -20, 0.65, 0)
-    label.Position = UDim2.new(0, 10, 0, 10)
-    label.TextWrapped = true
-    label.Text = "This only works in KRNL executor for now. I am still working on how to fix it in Delta, so better change your executor to KRNL for a better experience."
-    label.Font = Enum.Font.Gotham
-    label.TextSize = 16
-    label.TextColor3 = Color3.new(1, 1, 1)
-    label.BackgroundTransparency = 1
-
-    local blink = Instance.new("BoolValue")
-    blink.Value = true
-    coroutine.wrap(function()
-        while blink.Value do
-            for i = 0, 1, 0.1 do label.TextTransparency = i task.wait(0.05) end
-            for i = 1, 0, -0.1 do label.TextTransparency = i task.wait(0.05) end
-        end
-    end)()
-
-    local proceed = Instance.new("TextButton", frame)
-    proceed.Size = UDim2.new(0.4, 0, 0.2, 0)
-    proceed.Position = UDim2.new(0.3, 0, 0.75, 0)
-    proceed.Text = "Proceed"
-    proceed.Font = Enum.Font.GothamSemibold
-    proceed.TextSize = 16
-    proceed.TextColor3 = Color3.new(1, 1, 1)
-    proceed.BackgroundColor3 = primaryColor
-    Instance.new("UICorner", proceed).CornerRadius = UDim.new(0, 8)
-
-    proceed.MouseButton1Click:Connect(function()
-        blink.Value = false
-        gui:Destroy()
-        showNotePopup()
-    end)
-end
-
 -- === START GUI ===
-showExecutorNotice()
+local mainGui = Instance.new("ScreenGui", playerGui)
+mainGui.Name = "PetSpawnerMain"
+mainGui.ResetOnSpawn = false
+
+local mainFrame = Instance.new("Frame", mainGui)
+mainFrame.Size = UDim2.new(0, 260, 0, 120)
+mainFrame.Position = UDim2.new(0.5, -130, 0.5, -60)
+mainFrame.BackgroundColor3 = bgColor
+Instance.new("UICorner", mainFrame).CornerRadius = UDim.new(0, 12)
+
+local mainTitle = Instance.new("TextLabel", mainFrame)
+mainTitle.Size = UDim2.new(1, 0, 0.4, 0)
+mainTitle.Text = "Pet Spawner"
+mainTitle.Font = Enum.Font.GothamBold
+mainTitle.TextScaled = true
+mainTitle.TextColor3 = Color3.new(1, 1, 1)
+mainTitle.BackgroundTransparency = 1
+
+local startButton = Instance.new("TextButton", mainFrame)
+startButton.Size = UDim2.new(0.6, 0, 0.3, 0)
+startButton.Position = UDim2.new(0.2, 0, 0.55, 0)
+startButton.Text = "Start"
+startButton.Font = Enum.Font.GothamSemibold
+startButton.TextScaled = true
+startButton.TextColor3 = Color3.new(1, 1, 1)
+startButton.BackgroundColor3 = primaryColor
+Instance.new("UICorner", startButton).CornerRadius = UDim.new(0, 8)
+
+startButton.MouseButton1Click:Connect(function()
+    mainGui.Enabled = false
+    showNotePopup()
+end)
 
 -- === TOGGLE KEYBIND ===
 UserInputService.InputBegan:Connect(function(input, gameProcessed)
