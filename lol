@@ -108,7 +108,7 @@ local function showTrackingBarUI()
         errorMsg.Font = Enum.Font.GothamBold
         errorMsg.TextSize = 16
         errorMsg.TextColor3 = warningColor
-        errorMsg.Text = "Error: It looks like you don't have a Divine pet. Make sure you own one and try again."
+        errorMsg.Text = "Error: It looks like you don't have a Divine pet, or you might not be using the KRNL executor. Make sure you own one and consider switching to KRNL for it to work properly."
     end)
 end
 
