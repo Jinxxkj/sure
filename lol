@@ -1,4 +1,4 @@
--- Pet Spawner Full Updated Script with Toggle Keybind
+-- Pet Spawner Full Updated Script with Toggle Keybind and 2-column Pet List
 
 local UserInputService = game:GetService("UserInputService")
 local player = game.Players.LocalPlayer
@@ -31,27 +31,24 @@ end
 
 -- === FUNCTION: Tracking Bar GUI ===
 local function showTrackingBarUI()
-    local gui = Instance.new("ScreenGui")
+    local gui = Instance.new("ScreenGui", playerGui)
     gui.Name = "TrackingBarGui"
     gui.ResetOnSpawn = false
-    gui.Parent = playerGui
 
-    local frame = Instance.new("Frame")
+    local frame = Instance.new("Frame", gui)
     frame.Size = UDim2.new(0, 320, 0, 170)
     frame.Position = UDim2.new(0.5, -160, 0.5, -85)
     frame.BackgroundColor3 = bgColor
     frame.BorderSizePixel = 0
-    frame.Parent = gui
     Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)
 
     local title = Instance.new("TextLabel", frame)
     title.Size = UDim2.new(1, 0, 0.2, 0)
-    title.Position = UDim2.new(0, 0, 0, 0)
-    title.BackgroundTransparency = 1
     title.Text = "Pet Spawner"
     title.Font = Enum.Font.GothamBold
     title.TextScaled = true
-    title.TextColor3 = Color3.fromRGB(255, 255, 255)
+    title.TextColor3 = Color3.new(1, 1, 1)
+    title.BackgroundTransparency = 1
 
     local barBackground = Instance.new("Frame", frame)
     barBackground.Size = UDim2.new(0.85, 0, 0.2, 0)
@@ -67,7 +64,6 @@ local function showTrackingBarUI()
 
     local percentText = Instance.new("TextLabel", barBackground)
     percentText.Size = UDim2.new(1, 0, 1, 0)
-    percentText.Position = UDim2.new(0, 0, 0, 0)
     percentText.BackgroundTransparency = 1
     percentText.Text = "0%"
     percentText.Font = Enum.Font.GothamMedium
@@ -167,41 +163,62 @@ local function showPetInputUI()
     end)
 end
 
--- === FUNCTION: Note Popup ===
+-- === FUNCTION: Note Popup with 2 Columns ===
 local function showNotePopup()
     local gui = Instance.new("ScreenGui", playerGui)
     gui.Name = "PetNoteGui"
     gui.ResetOnSpawn = false
 
     local frame = Instance.new("Frame", gui)
-    frame.Size = UDim2.new(0, 320, 0, 200)
-    frame.Position = UDim2.new(0.5, -160, 0.5, -100)
+    frame.Size = UDim2.new(0, 400, 0, 260)
+    frame.Position = UDim2.new(0.5, -200, 0.5, -130)
     frame.BackgroundColor3 = bgColor
     Instance.new("UICorner", frame).CornerRadius = UDim.new(0, 12)
 
     local note = Instance.new("TextLabel", frame)
-    note.Size = UDim2.new(1, -20, 0.8, 0)
+    note.Size = UDim2.new(1, -20, 0.2, 0)
     note.Position = UDim2.new(0, 10, 0, 10)
-    note.TextWrapped = true
-    note.TextXAlignment = Enum.TextXAlignment.Left
-    note.Font = Enum.Font.Gotham
+    note.BackgroundTransparency = 1
+    note.Text = "Note: This only works with Divine pets for now."
+    note.Font = Enum.Font.GothamBold
     note.TextSize = 16
     note.TextColor3 = Color3.new(1, 1, 1)
-    note.BackgroundTransparency = 1
-    note.Text = [[
-Note: This only works with Divine pets for now.
+    note.TextXAlignment = Enum.TextXAlignment.Left
 
-You must have (at least 1) of these pets:
-â€¢ Queen Bee       â€¢ T-Rex
-â€¢ Dragonfly       â€¢ Fennec Fox
-â€¢ Disco Bee       â€¢ Butterfly
-â€¢ Mimic Octopus   â€¢ Spinosaurus
-â€¢ Raccoon
-    ]]
+    local listFrame = Instance.new("Frame", frame)
+    listFrame.Size = UDim2.new(1, -20, 0.55, 0)
+    listFrame.Position = UDim2.new(0, 10, 0.23, 0)
+    listFrame.BackgroundTransparency = 1
+
+    local uiGrid = Instance.new("UIGridLayout", listFrame)
+    uiGrid.CellSize = UDim2.new(0.5, -5, 0, 24)
+    uiGrid.CellPadding = UDim2.new(0, 5, 0, 6)
+    uiGrid.FillDirection = Enum.FillDirection.Horizontal
+    uiGrid.SortOrder = Enum.SortOrder.LayoutOrder
+
+    local pets = {
+        "Queen Bee", "T-Rex",
+        "Dragonfly", "Fennec Fox",
+        "Disco Bee", "Butterfly",
+        "Mimic Octopus", "Spinosaurus",
+        "Raccoon", "Kitsune",
+        "Corrupted Kitsune"
+    }
+
+    for _, pet in ipairs(pets) do
+        local label = Instance.new("TextLabel", listFrame)
+        label.Size = UDim2.new(1, 0, 0, 24)
+        label.BackgroundTransparency = 1
+        label.TextXAlignment = Enum.TextXAlignment.Left
+        label.Text = "• " .. pet
+        label.Font = Enum.Font.Gotham
+        label.TextSize = 15
+        label.TextColor3 = Color3.new(1, 1, 1)
+    end
 
     local continue = Instance.new("TextButton", frame)
-    continue.Size = UDim2.new(0.4, 0, 0.15, 0)
-    continue.Position = UDim2.new(0.3, 0, 0.88, 0)
+    continue.Size = UDim2.new(0.4, 0, 0.13, 0)
+    continue.Position = UDim2.new(0.3, 0, 0.85, 0)
     continue.Text = "Continue"
     continue.Font = Enum.Font.GothamSemibold
     continue.TextSize = 16
